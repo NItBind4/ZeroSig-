@@ -1,0 +1,17 @@
+zerosig/
+├── .github/
+│   └── workflows/
+│       ├── zerosig-pipeline.yml     # CI/CD build & test
+│       └── gh-pages.yml             # GitHub Pages deployment
+├── docs/                            # GitHub Pages site
+├── dist/                            # Binary outputs (gitignored)
+├── zerosig.py                       # Main CLI engine
+├── zerosig_gui.py                   # GUI launcher
+├── panic.py                         # Panic logic
+├── metadata_scrub.py               # Metadata removal
+├── tor_upload.py                   # Tor uploader (stub)
+├── win_compat.py                   # Windows IP blocking
+├── Dockerfile
+├── README.md
+├── LICENSE
+└── .gitignore
