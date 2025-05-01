@@ -1,0 +1,66 @@
+name: ZeroSig Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-linux:
+    name: Build on Linux
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt pyinstaller
+
+    - name: Run Scrub Test
+      run: python metadata_scrub.py
+
+    - name: Build Binary
+      run: |
+        pyinstaller --onefile zerosig.py
+        ls -lh dist/
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ZeroSig-Linux-Binary
+        path: dist/zerosig
+
+  build-windows:
+    name: Build on Windows
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt pyinstaller
+
+    - name: Build EXE
+      run: pyinstaller --noconsole --onefile zerosig_gui.py
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ZeroSig-Windows-EXE
+        path: dist/zerosig_gui.exe
